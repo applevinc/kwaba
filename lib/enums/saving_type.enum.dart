@@ -1,0 +1,4 @@
+enum SavingType {
+  manual,
+  automatic,
+}
