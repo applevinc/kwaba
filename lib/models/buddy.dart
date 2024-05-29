@@ -10,4 +10,8 @@ class Buddy {
   final String firstName;
 
   final String lastName;
+
+  String get name {
+    return '$firstName $lastName';
+  }
 }

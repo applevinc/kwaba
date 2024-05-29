@@ -3,51 +3,72 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:kwaba/enums/saving_frequency.enum.dart';
+import 'package:kwaba/models/buddy.dart';
 import 'package:kwaba/screens/buddy_savings/buddy_savings.controller.dart';
+import 'package:kwaba/screens/buddy_savings/sheets/buddies.sheet.dart';
 import 'package:kwaba/styles/colors.dart';
 import 'package:kwaba/styles/text.dart';
 import 'package:kwaba/widgets/amount_text.dart';
 import 'package:kwaba/widgets/custom_switch.dart';
 import 'package:provider/provider.dart';
 
-class BuddySavingsInviteView extends StatelessWidget {
+class BuddySavingsInviteView extends StatefulWidget {
   const BuddySavingsInviteView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = context.watch<BuddySavingsController>();
-    final savingFrequency = controller.selectedSavingFrequency;
-    final startDate = controller.startDate;
-    final endDate = controller.endDate;
+  State<BuddySavingsInviteView> createState() => _BuddySavingsInviteViewState();
+}
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Invite Buddy',
-          style: AppText.bold600.copyWith(
-            fontSize: 18,
+class _BuddySavingsInviteViewState extends State<BuddySavingsInviteView> {
+  void addBuddy() async {
+    final result = await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => const BuddiesSheet(),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (result is Buddy) {
+      context.read<BuddySavingsController>().addBuddy(result);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Invite Buddy',
+            style: AppText.bold600.copyWith(
+              fontSize: 18,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'An invite will be sent to any of your buddy you add to this saving plan',
-          style: AppText.bold500.copyWith(
-            color: AppColors.grey,
+          const SizedBox(height: 4),
+          Text(
+            'An invite will be sent to any of your buddy you add to this saving plan',
+            style: AppText.bold500.copyWith(
+              color: AppColors.grey,
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-        const _CardView(),
-        const SizedBox(height: 8),
-        Align(
-          alignment: Alignment.center,
-          child: TextButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Buddy'),
+          const SizedBox(height: 16),
+          const _CardView(),
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.center,
+            child: TextButton.icon(
+              onPressed: addBuddy,
+              icon: const Icon(Icons.add),
+              label: const Text('Add Buddy'),
+            ),
           ),
-        ),
-      ],
+          const _BuddiesView(),
+        ],
+      ),
     );
   }
 }
@@ -228,6 +249,60 @@ class _CardView extends StatelessWidget {
             fontSize: 16,
             color: Colors.white,
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BuddiesView extends StatelessWidget {
+  const _BuddiesView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final buddies = context.watch<BuddySavingsController>().buddies;
+
+    return ListView.separated(
+      shrinkWrap: true,
+      itemCount: buddies.length,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(bottom: 40),
+      itemBuilder: (context, index) {
+        final buddy = buddies[index];
+        return item(buddy: buddy, context: context);
+      },
+      separatorBuilder: (context, index) => const Divider(),
+    );
+  }
+
+  Widget item({
+    required BuildContext context,
+    required Buddy buddy,
+  }) {
+    return Row(
+      children: [
+        Container(
+          height: 40,
+          width: 40,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey,
+          ),
+          child: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(buddy.name),
+        ),
+        const SizedBox(width: 8),
+        InkWell(
+          onTap: () {
+            context.read<BuddySavingsController>().removeBuddy(buddy);
+          },
+          child: const Icon(Icons.delete),
         ),
       ],
     );

@@ -100,6 +100,11 @@ abstract class AppTheme {
           ),
         ),
       ),
+      listTileTheme: const ListTileThemeData(
+        dense: true,
+        contentPadding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+      ),
       switchTheme: SwitchThemeData(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         trackColor: MaterialStateProperty.resolveWith(

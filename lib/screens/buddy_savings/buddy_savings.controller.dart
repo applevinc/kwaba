@@ -191,44 +191,6 @@ class BuddySavingsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  CreateBuddySavingRequest createRequest() {
-    if (startDate == null) {
-      throw Exception('Please pick a start date');
-    }
-
-    if (endDate == null) {
-      throw Exception('Please pick an end date');
-    }
-
-    if (savingType == null) {
-      throw Exception('Please pick a saving type');
-    }
-
-    if (savingFrequency == null) {
-      throw Exception('Please pick a saving frequency');
-    }
-
-    if (relationshipWithBuddies == null) {
-      throw Exception('Please pick a relationship with buddies');
-    }
-
-    final amount = Amount(
-      value: double.tryParse(amountController.text.replaceAll(',', '')) ?? 0.0,
-    );
-
-    return CreateBuddySavingRequest(
-      title: titleController.text,
-      amount: amount,
-      numberOfBuddies: int.parse(numberOfBuddiesController.text),
-      startDate: startDate!,
-      endDate: endDate!,
-      hasTarget: option == AppConstants.yes,
-      savingType: savingType!,
-      savingFrequency: stringToSavingFrequency(savingFrequency!),
-      relationshipWithBuddies: relationshipWithBuddies!,
-    );
-  }
-
   @override
   void dispose() {
     titleController.dispose();

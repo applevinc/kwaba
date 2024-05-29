@@ -42,9 +42,13 @@ class _Body extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
-          padding: AppPadding.defaultPadding,
+          padding: EdgeInsets.only(
+            top: 8,
+            left: AppPadding.horizontal,
+            right: AppPadding.horizontal,
+          ),
           child: SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.8,
+            height: MediaQuery.sizeOf(context).height * 0.85,
             child: IndexedStack(
               index: controller.currentIndex,
               children: const [

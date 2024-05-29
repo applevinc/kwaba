@@ -89,11 +89,12 @@ class _BuddySavingsStepTwoViewState extends State<BuddySavingsStepTwoView> {
             selectedOption: controller.savingFrequency,
             onSelected: controller.setSavingFrequency,
           ),
-          const Spacer(),
+          const Spacer(flex: 4),
           AppButton(
             label: 'Next',
             onTap: nextPage,
           ),
+          const Spacer(),
         ],
       ),
     );

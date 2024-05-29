@@ -18,7 +18,7 @@ class BuddySavingsStepOneView extends StatefulWidget {
 class _BuddySavingsStepOneViewState extends State<BuddySavingsStepOneView> {
   final _formKey = GlobalKey<FormState>();
 
-  void nextPage() {
+  void next() {
     if (_formKey.currentState == null) {
       return;
     }
@@ -81,11 +81,12 @@ class _BuddySavingsStepOneViewState extends State<BuddySavingsStepOneView> {
             selectedOption: controller.option,
             onSelected: controller.setHasTarget,
           ),
-          const Spacer(),
+          const Spacer(flex: 4),
           AppButton(
             label: 'Next',
-            onTap: nextPage,
+            onTap: next,
           ),
+          const Spacer(),
         ],
       ),
     );

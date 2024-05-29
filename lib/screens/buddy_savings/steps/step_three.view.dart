@@ -124,11 +124,12 @@ class _BuddySavingsStepThreeViewState extends State<BuddySavingsStepThreeView> {
               controller.setRelationshipWithBuddies(value);
             },
           ),
-          const Spacer(),
+          const Spacer(flex: 4),
           AppButton(
             label: 'Next',
             onTap: next,
           ),
+          const Spacer(),
         ],
       ),
     );
