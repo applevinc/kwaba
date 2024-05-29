@@ -38,6 +38,7 @@ class CustomTextField extends StatelessWidget {
   final TextStyle? titleStyle;
   final String? counterText;
   final TextStyle? counterStyle;
+  final bool enabled;
 
   const CustomTextField({
     super.key,
@@ -76,11 +77,13 @@ class CustomTextField extends StatelessWidget {
     this.titleStyle,
     this.counterText,
     this.counterStyle,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final field = TextFormField(
+      enabled: enabled,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       style: style ?? AppText.bold500,
       textCapitalization: textCapitalization,
@@ -100,20 +103,28 @@ class CustomTextField extends StatelessWidget {
         prefixStyle: prefixStyle,
         counterText: counterText,
         counterStyle: counterStyle,
-        filled: filled,
-        fillColor: fillColor ?? Colors.transparent,
         errorText: errorText,
         contentPadding: contentPadding,
         labelText: labelText,
         hintText: hintText,
         prefix: prefix,
-        prefixIcon: prefixIcon,
+        prefixIcon: prefixIcon == null
+            ? null
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: prefixIcon,
+              ),
         prefixIconConstraints: const BoxConstraints(
           minWidth: 25,
           minHeight: 25,
         ),
         suffixText: suffixText,
-        suffixIcon: suffixIcon,
+        suffixIcon: suffixIcon == null
+            ? null
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: suffixIcon,
+              ),
         suffixIconConstraints: const BoxConstraints(
           minWidth: 25,
           minHeight: 25,

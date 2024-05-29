@@ -2,16 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kwaba/enums/saving_frequency.enum.dart';
 import 'package:kwaba/enums/saving_type.enum.dart';
+import 'package:kwaba/models/amount.dart';
+import 'package:kwaba/models/create_buddy_saving.request.dart';
+import 'package:kwaba/utils/constants.dart';
 
 final _maxSavingDate = DateTime.now().add(const Duration(days: 365));
 
-class BuddySavingController extends ChangeNotifier {
-  BuddySavingController() {
+class BuddySavingsController extends ChangeNotifier {
+  BuddySavingsController() {
+    _currentIndex = 0;
     titleController = TextEditingController();
     amountController = TextEditingController();
     numberOfBuddiesController = TextEditingController();
     startDateController = TextEditingController();
     endDateController = TextEditingController();
+  }
+
+  late int _currentIndex;
+
+  int get currentIndex => _currentIndex;
+
+  void nextPage() {
+    _currentIndex++;
+    notifyListeners();
+  }
+
+  void previousPage() {
+    _currentIndex--;
+    notifyListeners();
   }
 
   late final TextEditingController titleController;
@@ -24,12 +42,25 @@ class BuddySavingController extends ChangeNotifier {
 
   late final TextEditingController endDateController;
 
-  bool _hasTarget = false;
+  final List<String> options = [AppConstants.yes, AppConstants.no];
 
-  bool get hasTarget => _hasTarget;
+  String? _option;
 
-  void setHasTarget(bool value) {
-    _hasTarget = value;
+  String? get option => _option;
+
+  bool get hasTarget {
+    switch (option) {
+      case AppConstants.yes:
+        return true;
+      case AppConstants.no:
+        return false;
+      default:
+        return false;
+    }
+  }
+
+  void setHasTarget(String value) {
+    _option = value;
     notifyListeners();
   }
 
@@ -42,11 +73,14 @@ class BuddySavingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  SavingFrequency? _savingFrequency;
+  final savingFrequencies =
+      SavingFrequency.values.map((e) => savingFrequencyToString(e)).toList();
 
-  SavingFrequency? get savingFrequency => _savingFrequency;
+  String? _savingFrequency;
 
-  void setSavingFrequency(SavingFrequency? value) {
+  String? get savingFrequency => _savingFrequency;
+
+  void setSavingFrequency(String value) {
     _savingFrequency = value;
     notifyListeners();
   }
@@ -66,7 +100,7 @@ class BuddySavingController extends ChangeNotifier {
 
   String? get relationshipWithBuddies => _relationshipWithBuddies;
 
-  void setRelationshipWithBuddies(String? value) {
+  void setRelationshipWithBuddies(String value) {
     _relationshipWithBuddies = value;
     notifyListeners();
   }
@@ -89,6 +123,8 @@ class BuddySavingController extends ChangeNotifier {
 
     _startDate = date;
     startDateController.text = DateFormat('dd/MM/yyyy').format(date);
+    _endDate = null;
+    endDateController.clear();
     notifyListeners();
   }
 
@@ -111,6 +147,44 @@ class BuddySavingController extends ChangeNotifier {
     _endDate = date;
     endDateController.text = DateFormat('dd/MM/yyyy').format(date);
     notifyListeners();
+  }
+
+  CreateBuddySavingRequest createRequest() {
+    if (startDate == null) {
+      throw Exception('Please pick a start date');
+    }
+
+    if (endDate == null) {
+      throw Exception('Please pick an end date');
+    }
+
+    if (savingType == null) {
+      throw Exception('Please pick a saving type');
+    }
+
+    if (savingFrequency == null) {
+      throw Exception('Please pick a saving frequency');
+    }
+
+    if (relationshipWithBuddies == null) {
+      throw Exception('Please pick a relationship with buddies');
+    }
+
+    final amount = Amount(
+      value: double.tryParse(amountController.text.replaceAll(',', '')) ?? 0.0,
+    );
+
+    return CreateBuddySavingRequest(
+      title: titleController.text,
+      amount: amount,
+      numberOfBuddies: int.parse(numberOfBuddiesController.text),
+      startDate: startDate!,
+      endDate: endDate!,
+      hasTarget: option == AppConstants.yes,
+      savingType: savingType!,
+      savingFrequency: stringToSavingFrequency(savingFrequency!),
+      relationshipWithBuddies: relationshipWithBuddies!,
+    );
   }
 
   @override

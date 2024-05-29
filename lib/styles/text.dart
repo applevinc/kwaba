@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 abstract class AppText {
   static TextStyle get _defaultStyle {
-    return GoogleFonts.inter(
+    return GoogleFonts.poppins(
       fontSize: 14,
     );
   }

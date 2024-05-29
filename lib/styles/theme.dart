@@ -34,16 +34,17 @@ abstract class AppTheme {
       ),
       useMaterial3: true,
       scaffoldBackgroundColor: AppColors.backgroundColor,
-      textTheme: GoogleFonts.interTextTheme().apply(
+      textTheme: GoogleFonts.poppinsTextTheme().apply(
         bodyColor: AppColors.greyCharcoal,
         displayColor: AppColors.greyCharcoal,
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.backgroundColor,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: AppText.bold600.copyWith(
           fontSize: 18,
+          color: AppColors.greyCharcoal,
         ),
         iconTheme: const IconThemeData(
           color: Colors.black,
@@ -63,13 +64,13 @@ abstract class AppTheme {
         fillColor: Colors.white,
         hintStyle: AppText.bold600.copyWith(
           color: AppColors.greyClooney,
+          fontSize: 14,
         ),
         labelStyle: AppText.bold400.copyWith(
           color: AppColors.greyGandalf,
-          fontSize: 14,
         ),
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 18,
+          vertical: 16,
           horizontal: 12,
         ),
         errorStyle: AppText.bold400.copyWith(

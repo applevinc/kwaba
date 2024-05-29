@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kwaba/screens/home/home.screen.dart';
 import 'package:kwaba/styles/theme.dart';
-import 'package:screenshot/screenshot.dart';
 
 void main() {
   runApp(const MainApp());

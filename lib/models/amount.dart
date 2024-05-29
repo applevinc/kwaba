@@ -1,5 +1,5 @@
 class Amount {
-  Amount(this.value);
+  Amount({required this.value});
 
   final num value;
 }
