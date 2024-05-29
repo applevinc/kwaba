@@ -38,6 +38,8 @@ class _BuddySavingsInviteViewState extends State<BuddySavingsInviteView> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<BuddySavingsController>();
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,15 +59,18 @@ class _BuddySavingsInviteViewState extends State<BuddySavingsInviteView> {
           ),
           const SizedBox(height: 16),
           const _CardView(),
-          const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.center,
-            child: TextButton.icon(
-              onPressed: addBuddy,
-              icon: const Icon(Icons.add),
-              label: const Text('Add Buddy'),
+          if (controller.canAddBuddy)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: addBuddy,
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Buddy'),
+                ),
+              ),
             ),
-          ),
           const _BuddiesView(),
         ],
       ),
@@ -133,7 +138,7 @@ class _CardView extends StatelessWidget {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '${controller.buddies.length} buddies',
+                      text: '${controller.numberOfBuddies} buddies',
                       style: AppText.bold400.copyWith(
                         color: Colors.white,
                         fontSize: 12,
@@ -266,7 +271,7 @@ class _BuddiesView extends StatelessWidget {
       shrinkWrap: true,
       itemCount: buddies.length,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 40),
+      padding: const EdgeInsets.only(top: 20, bottom: 40),
       itemBuilder: (context, index) {
         final buddy = buddies[index];
         return item(buddy: buddy, context: context);

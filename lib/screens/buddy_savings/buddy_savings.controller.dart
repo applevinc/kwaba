@@ -43,6 +43,8 @@ class BuddySavingsController extends ChangeNotifier {
 
   late final TextEditingController numberOfBuddiesController;
 
+  int get numberOfBuddies => int.tryParse(numberOfBuddiesController.text) ?? 0;
+
   late final TextEditingController startDateController;
 
   late final TextEditingController endDateController;
@@ -166,7 +168,13 @@ class BuddySavingsController extends ChangeNotifier {
 
   List<Buddy> get buddies => _buddies;
 
+  bool get canAddBuddy => _buddies.length < numberOfBuddies;
+
   void addBuddy(Buddy buddy) {
+    if (!canAddBuddy) {
+      return;
+    }
+
     _buddies.add(buddy);
     notifyListeners();
   }
