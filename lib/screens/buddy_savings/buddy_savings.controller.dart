@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:kwaba/enums/saving_frequency.enum.dart';
 import 'package:kwaba/enums/saving_type.enum.dart';
 import 'package:kwaba/models/amount.dart';
+import 'package:kwaba/models/buddy.dart';
 import 'package:kwaba/models/create_buddy_saving.request.dart';
 import 'package:kwaba/utils/constants.dart';
 
@@ -35,6 +36,10 @@ class BuddySavingsController extends ChangeNotifier {
   late final TextEditingController titleController;
 
   late final TextEditingController amountController;
+
+  Amount get targetAmount => Amount(
+        value: double.tryParse(amountController.text.replaceAll(',', '')) ?? 0.0,
+      );
 
   late final TextEditingController numberOfBuddiesController;
 
@@ -79,6 +84,14 @@ class BuddySavingsController extends ChangeNotifier {
   String? _savingFrequency;
 
   String? get savingFrequency => _savingFrequency;
+
+  SavingFrequency? get selectedSavingFrequency {
+    if (_savingFrequency == null) {
+      return null;
+    }
+
+    return stringToSavingFrequency(_savingFrequency!);
+  }
 
   void setSavingFrequency(String value) {
     _savingFrequency = value;
@@ -146,6 +159,35 @@ class BuddySavingsController extends ChangeNotifier {
 
     _endDate = date;
     endDateController.text = DateFormat('dd/MM/yyyy').format(date);
+    notifyListeners();
+  }
+
+  final List<Buddy> _buddies = [];
+
+  List<Buddy> get buddies => _buddies;
+
+  void addBuddy(Buddy buddy) {
+    _buddies.add(buddy);
+    notifyListeners();
+  }
+
+  void removeBuddy(Buddy buddy) {
+    final index = _buddies.indexWhere((element) => element.id == buddy.id);
+
+    if (index == -1) {
+      return;
+    }
+
+    _buddies.removeAt(index);
+    notifyListeners();
+  }
+
+  bool _locked = false;
+
+  bool get locked => _locked;
+
+  void toggleLock() {
+    _locked = !_locked;
     notifyListeners();
   }
 

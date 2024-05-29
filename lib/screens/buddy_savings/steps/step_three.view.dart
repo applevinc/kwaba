@@ -26,11 +26,25 @@ class _BuddySavingsStepThreeViewState extends State<BuddySavingsStepThreeView> {
     }
 
     if (_formKey.currentState!.validate()) {
-      try {
-        final request = context.read<BuddySavingsController>().createRequest();
-      } on Exception catch (e) {
-        Messenger.show(context: context, message: e.toString());
+      final controller = context.read<BuddySavingsController>();
+
+      if (controller.startDate == null) {
+        Messenger.show(context: context, message: 'Please pick a start date');
+        return;
       }
+
+      if (controller.endDate == null) {
+        Messenger.show(context: context, message: 'Please pick an end date');
+        return;
+      }
+
+      if (controller.relationshipWithBuddies == null) {
+        Messenger.show(
+            context: context, message: 'Please select relationship with buddies');
+        return;
+      }
+
+      controller.nextPage();
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kwaba/screens/buddy_savings/buddy_savings.controller.dart';
+import 'package:kwaba/screens/buddy_savings/steps/invite_step.view.dart';
 import 'package:kwaba/screens/buddy_savings/steps/step_one.view.dart';
 import 'package:kwaba/screens/buddy_savings/steps/step_three.view.dart';
 import 'package:kwaba/screens/buddy_savings/steps/step_two.view.dart';
@@ -50,6 +51,7 @@ class _Body extends StatelessWidget {
                 BuddySavingsStepOneView(),
                 BuddySavingsStepTwoView(),
                 BuddySavingsStepThreeView(),
+                BuddySavingsInviteView(),
               ],
             ),
           ),
