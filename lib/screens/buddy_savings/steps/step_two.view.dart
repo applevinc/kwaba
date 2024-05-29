@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kwaba/enums/saving_type.enum.dart';
 import 'package:kwaba/screens/buddy_savings/buddy_savings.controller.dart';
+import 'package:kwaba/screens/buddy_savings/widgets/card.dart';
 import 'package:kwaba/screens/buddy_savings/widgets/options.dart';
 import 'package:kwaba/styles/colors.dart';
 import 'package:kwaba/styles/text.dart';
@@ -51,6 +52,7 @@ class _BuddySavingsStepTwoViewState extends State<BuddySavingsStepTwoView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const BuddySavingsCardView(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
